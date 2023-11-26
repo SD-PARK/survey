@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyResponseService } from './survey_response.service';
 import { SurveyResponse } from './survey_response.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('SurveyResponseService', () => {
@@ -87,6 +87,11 @@ describe('SurveyResponseService', () => {
       expect(service.getSurveyResponses()).rejects.toThrow('Unexpected error: find error');
     });
 
+    it('Fail: GetCompletedSurveys', async () => {
+      repository.find.mockRejectedValue(new Error('find error'));
+      expect(service.getCompletedSurveys()).rejects.toThrow('Unexpected error: find error');
+    });
+
     it ('Pass: GetSurveyResponse', async () => {
       repository.findOne.mockResolvedValue(readResult);
       const result = await service.getSurveyResponse(readArgs);
@@ -105,6 +110,16 @@ describe('SurveyResponseService', () => {
 
       expect(result).toEqual([readResult]);
     });
+
+    it ('Pass: GetCompletedSurveys', async () => {
+      repository.find.mockResolvedValue([readResult]);
+      const result = await service.getCompletedSurveys();
+
+      expect(repository.find).toHaveBeenCalledWith({ where: { completionDate: Not(IsNull()) }});
+      expect(repository.find).toHaveBeenCalledTimes(1);
+
+      expect(result).toEqual([readResult]);
+    });
   });
 
   describe('Update', () => {
@@ -116,18 +131,23 @@ describe('SurveyResponseService', () => {
       id: 1,
       surveyId: 1,
       userId: 1,
-      completionDate: new Date(),
+      completionDate: null,
     }
     const updateResult = {
       id: 1,
       surveyId: 1,
       userId: 2,
-      completionDate: new Date(),
+      completionDate: null,
     }
 
     it('Fail: UpdateSurveyResponse', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
       expect(service.updateSurveyResponse(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+    });
+
+    it('Fail: CompleteSurvey', async () => {
+      repository.update.mockRejectedValueOnce(new Error('update error'));
+      expect(service.completeSurvey(updateArgsId)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateSurveyResponse', async () => {
@@ -140,6 +160,22 @@ describe('SurveyResponseService', () => {
       expect(repository.update).toHaveBeenCalledWith(updateArgsId, updateArgs);
 
       expect(result).toEqual(updateResult);
+    });
+
+    it('Pass: CompleteSurvey', async () => {
+      repository.findOne.mockResolvedValue(originalResult);
+      const result = await service.completeSurvey(updateArgsId);
+
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: updateArgsId }});
+      expect(repository.update).toHaveBeenCalledTimes(1);
+      expect(repository.update).toHaveBeenCalledWith(updateArgsId, { completionDate: expect.any(Date) });
+
+      expect(result.completionDate).toEqual(expect.any(Date));
+      expect(result).toEqual({
+        ...originalResult,
+        completionDate: expect.any(Date),
+      });
     });
   });
 
