@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SurveyResponse } from './survey_response.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, IsNull, Not, Repository } from 'typeorm';
 import { CreateSurveyResponseInput, UpdateSurveyResponseInput } from './survey_response.input';
 
 @Injectable()
@@ -45,6 +45,15 @@ export class SurveyResponseService {
         }
     }
 
+    async getCompletedSurveys(): Promise<SurveyResponse[]> {
+        try {
+            const result: SurveyResponse[] = await this.surveyResponseRepository.find({ where: { completionDate: Not(IsNull()) }});
+            return result;
+        } catch (err) {
+            throw new Error(`Unexpected error: ${err.message}`);
+        }
+    }
+
     // Update
     async updateSurveyResponse(id: number, surveyResponseInput: UpdateSurveyResponseInput): Promise<SurveyResponse> {
         const surveyResponse: SurveyResponse = await this.getSurveyResponse(id);
@@ -52,6 +61,18 @@ export class SurveyResponseService {
             await this.surveyResponseRepository.update(id, surveyResponseInput);
             const updateSurveyResponse = { ...surveyResponse, ...surveyResponseInput };
             return updateSurveyResponse;
+        } catch (err) {
+            throw new Error(`Unexpected error: ${err.message}`);
+        }
+    }
+
+    async completeSurvey(id: number): Promise<SurveyResponse> {
+        const surveyResponse: SurveyResponse = await this.getSurveyResponse(id);
+        try {
+            const now = new Date();
+            await this.surveyResponseRepository.update(id, { completionDate: now });
+            const completeSurveyResponse = { ...surveyResponse, completionDate: now };
+            return completeSurveyResponse;
         } catch (err) {
             throw new Error(`Unexpected error: ${err.message}`);
         }

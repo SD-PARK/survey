@@ -23,6 +23,11 @@ export class SurveyResponseResolver {
         return this.surveyResponseService.getSurveyResponses();
     }
 
+    @Query(() => [SurveyResponse])
+    async getCompletedSurveys(): Promise<SurveyResponse[]> {
+        return this.surveyResponseService.getCompletedSurveys();
+    }
+
     // Update
     @Mutation(() => SurveyResponse)
     async updateSurveyResponse(
@@ -30,6 +35,13 @@ export class SurveyResponseResolver {
         @Args('surveyResponseInput') surveyResponseInput: UpdateSurveyResponseInput
     ): Promise<SurveyResponse> {
         return this.surveyResponseService.updateSurveyResponse(id, surveyResponseInput);
+    }
+
+    @Mutation(() => SurveyResponse)
+    async completeSurvey(
+        @Args('id') id: number
+    ): Promise<SurveyResponse> {
+        return this.surveyResponseService.completeSurvey(id);
     }
 
     // Delete

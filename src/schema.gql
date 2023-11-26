@@ -48,6 +48,7 @@ type Query {
   getChoices: [Choice!]!
   getSurveyResponse(id: Float!): SurveyResponse!
   getSurveyResponses: [SurveyResponse!]!
+  getCompletedSurveys: [SurveyResponse!]!
   getAnswer(id: Float!): Answer!
   getAnswers: [Answer!]!
 }
@@ -64,6 +65,7 @@ type Mutation {
   deleteChoice(id: Float!): Float!
   createSurveyResponse(surveyResponseInput: CreateSurveyResponseInput!): SurveyResponse!
   updateSurveyResponse(id: Float!, surveyResponseInput: UpdateSurveyResponseInput!): SurveyResponse!
+  completeSurvey(id: Float!): SurveyResponse!
   deleteSurveyResponse(id: Float!): Float!
   createAnswer(answerInput: CreateAnswerInput!): Answer!
   updateAnswer(id: Float!, answerInput: UpdateAnswerInput!): Answer!
