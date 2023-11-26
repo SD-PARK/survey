@@ -15,7 +15,14 @@ describe('SurveyResponseService', () => {
     find: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
+    createQueryBuilder: jest.fn(),
   });
+  const queryBuilderMock = {
+    select: jest.fn().mockReturnThis(),
+    leftJoin: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    groupBy: jest.fn().mockReturnThis(),
+  };
 
   type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
@@ -53,7 +60,7 @@ describe('SurveyResponseService', () => {
 
     it('Fail: CreateSurveyResponse', async () => {
       repository.save.mockRejectedValue(new Error('save error'));
-      expect(service.createSurveyResponse(createArgs)).rejects.toThrow('Unexpected error: save error');
+      await expect(service.createSurveyResponse(createArgs)).rejects.toThrow('Unexpected error: save error');
     });
 
     it('Pass: CreateSurveyResponse', async () => {
@@ -75,48 +82,54 @@ describe('SurveyResponseService', () => {
       surveyId: 1,
       userId: 1,
       completionDate: new Date(),
+    };
+    const failMock = {
+      getRawOne: jest.fn().mockRejectedValue(new Error('findOne error')),
+      getRawMany: jest.fn().mockRejectedValue(new Error('find error')),
+    };
+    const passMock = {
+      getRawOne: jest.fn().mockResolvedValue(readResult),
+      getRawMany: jest.fn().mockResolvedValue([readResult]),
     }
 
     it('Fail: GetSurveyResponse', async () => {
-      repository.findOne.mockRejectedValue(new Error('findOne error'));
-      expect(service.getSurveyResponse(readArgs)).rejects.toThrow('Unexpected error: findOne error');
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...failMock });
+      await expect(service.getSurveyResponse(readArgs)).rejects.toThrow('Unexpected error: findOne error');
     });
 
     it('Fail: GetSurveyResponses', async () => {
-      repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getSurveyResponses()).rejects.toThrow('Unexpected error: find error');
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...failMock });
+      await expect(service.getSurveyResponses()).rejects.toThrow('Unexpected error: find error');
     });
 
     it('Fail: GetCompletedSurveys', async () => {
-      repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getCompletedSurveys()).rejects.toThrow('Unexpected error: find error');
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...failMock });
+      await expect(service.getCompletedSurveys()).rejects.toThrow('Unexpected error: find error');
     });
 
     it ('Pass: GetSurveyResponse', async () => {
-      repository.findOne.mockResolvedValue(readResult);
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...passMock });
       const result = await service.getSurveyResponse(readArgs);
 
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: readArgs }});
-      expect(repository.findOne).toHaveBeenCalledTimes(1);
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
 
       expect(result).toEqual(readResult);
     });
 
     it ('Pass: GetSurveyResponses', async () => {
-      repository.find.mockResolvedValue([readResult]);
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...passMock });
       const result = await service.getSurveyResponses();
 
-      expect(repository.find).toHaveBeenCalledTimes(1);
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
 
       expect(result).toEqual([readResult]);
     });
 
     it ('Pass: GetCompletedSurveys', async () => {
-      repository.find.mockResolvedValue([readResult]);
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...passMock });
       const result = await service.getCompletedSurveys();
 
-      expect(repository.find).toHaveBeenCalledWith({ where: { completionDate: Not(IsNull()) }});
-      expect(repository.find).toHaveBeenCalledTimes(1);
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
 
       expect(result).toEqual([readResult]);
     });
@@ -139,23 +152,25 @@ describe('SurveyResponseService', () => {
       userId: 2,
       completionDate: null,
     }
+    const passMock = {
+      getRawOne: jest.fn().mockResolvedValue(originalResult),
+    };
 
     it('Fail: UpdateSurveyResponse', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.updateSurveyResponse(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.updateSurveyResponse(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Fail: CompleteSurvey', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.completeSurvey(updateArgsId)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.completeSurvey(updateArgsId)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateSurveyResponse', async () => {
-      repository.findOne.mockResolvedValue(originalResult);
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...passMock });
       const result = await service.updateSurveyResponse(updateArgsId, updateArgs);
 
-      expect(repository.findOne).toHaveBeenCalledTimes(1);
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: updateArgsId }});
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
       expect(repository.update).toHaveBeenCalledTimes(1);
       expect(repository.update).toHaveBeenCalledWith(updateArgsId, updateArgs);
 
@@ -163,11 +178,10 @@ describe('SurveyResponseService', () => {
     });
 
     it('Pass: CompleteSurvey', async () => {
-      repository.findOne.mockResolvedValue(originalResult);
+      repository.createQueryBuilder.mockReturnValue({ ...queryBuilderMock, ...passMock });
       const result = await service.completeSurvey(updateArgsId);
 
-      expect(repository.findOne).toHaveBeenCalledTimes(1);
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: updateArgsId }});
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
       expect(repository.update).toHaveBeenCalledTimes(1);
       expect(repository.update).toHaveBeenCalledWith(updateArgsId, { completionDate: expect.any(Date) });
 
@@ -187,15 +201,14 @@ describe('SurveyResponseService', () => {
 
     it('Fail: DeleteSurveyResponse', async () => {
       repository.delete.mockRejectedValue(new Error('delete error'));
-      expect(service.deleteSurveyResponse(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
+      await expect(service.deleteSurveyResponse(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
     });
 
     it('Pass: DeleteSurveyResponse', async () => {
       repository.delete.mockResolvedValue(deleteResult);
       const result = await service.deleteSurveyResponse(deleteArgs);
 
-      expect(repository.findOne).toHaveBeenCalledTimes(1);
-      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: deleteArgs }});
+      expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
       expect(repository.delete).toHaveBeenCalledTimes(1);
       expect(repository.delete).toHaveBeenCalledWith(deleteArgs);
 
