@@ -26,6 +26,7 @@ type SurveyResponse {
   surveyId: Int!
   userId: Int!
   completionDate: DateTime
+  score: Int!
 }
 
 """

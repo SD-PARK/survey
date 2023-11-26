@@ -22,6 +22,9 @@ export class SurveyResponse {
     @Field(() => Date, { nullable: true })
     completionDate?: Date;
 
+    @Field(() => Int, { defaultValue: 0 })
+    score?: number;
+
     // Relations
     @ManyToOne(() => Survey, survey => survey.surveyResponses)
     @JoinColumn({ name: 'id' })
