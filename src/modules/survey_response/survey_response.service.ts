@@ -23,7 +23,6 @@ export class SurveyResponseService {
     
     // Read
     async getSurveyResponse(id: number): Promise<SurveyResponse> {
-        let result: SurveyResponse;
         try {
             const result: SurveyResponse = await this.surveyResponseRepository.createQueryBuilder('sr')
                                     .select([
@@ -70,7 +69,19 @@ export class SurveyResponseService {
 
     async getCompletedSurveys(): Promise<SurveyResponse[]> {
         try {
-            const result: SurveyResponse[] = await this.surveyResponseRepository.find({ where: { completionDate: Not(IsNull()) }});
+            const result: SurveyResponse[] = await this.surveyResponseRepository.createQueryBuilder('sr')
+                                    .select([
+                                        `sr.id as "id"`,
+                                        `sr.survey_id as "surveyId"`,
+                                        `sr.user_id as "userId"`,
+                                        `sr.completion_date as "completionDate"`,
+                                        `COALESCE(SUM(c.score), 0) as "score"`
+                                    ])
+                                    .leftJoin('answers', 'a', 'sr.id = a.survey_response_id')
+                                    .leftJoin('choices', 'c', 'a.choice_id = c.id')
+                                    .where('sr.completion_date IS NOT NULL')
+                                    .groupBy('sr.id')
+                                    .getRawMany();
             return result;
         } catch (err) {
             throw new Error(`Unexpected error: ${err.message}`);

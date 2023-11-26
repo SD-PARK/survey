@@ -23,9 +23,8 @@ export class SurveyService {
     
     // Read
     async getSurvey(id: number): Promise<Survey> {
-        let result: Survey;
         try {
-            result = await this.surveyRepository.findOne({ where: { id: id }});
+            const result: Survey = await this.surveyRepository.findOne({ where: { id: id }});
             
             if (result === null)
                 throw new NotFoundException(`ID: ${id}에 해당하는 항목을 찾을 수 없습니다.`);

@@ -23,9 +23,8 @@ export class ChoiceService {
     
     // Read
     async getChoice(id: number): Promise<Choice> {
-        let result: Choice;
         try {
-            result = await this.choiceRepository.findOne({ where: { id: id }});
+            const result: Choice = await this.choiceRepository.findOne({ where: { id: id }});
 
             if (result === null)
                 throw new NotFoundException(`ID: ${id}에 해당하는 항목을 찾을 수 없습니다.`);

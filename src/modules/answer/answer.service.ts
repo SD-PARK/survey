@@ -23,9 +23,8 @@ export class AnswerService {
     
     // Read
     async getAnswer(id: number): Promise<Answer> {
-        let result: Answer;
         try {
-            result = await this.answerRepository.findOne({ where: { id: id }});
+            const result: Answer = await this.answerRepository.findOne({ where: { id: id }});
             
             if (result === null)
                 throw new NotFoundException(`ID: ${id}에 해당하는 항목을 찾을 수 없습니다.`);
