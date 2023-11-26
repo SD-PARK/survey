@@ -52,7 +52,7 @@ describe('QuestionService', () => {
 
     it('Fail: CreateQuestion', async () => {
       repository.save.mockRejectedValue(new Error('save error'));
-      expect(service.createQuestion(createArgs)).rejects.toThrow('Unexpected error: save error');
+      await expect(service.createQuestion(createArgs)).rejects.toThrow('Unexpected error: save error');
     });
 
     it('Pass: CreateQuestion', async () => {
@@ -77,12 +77,12 @@ describe('QuestionService', () => {
 
     it('Fail: GetQuestion', async () => {
       repository.findOne.mockRejectedValue(new Error('findOne error'));
-      expect(service.getQuestion(readArgs)).rejects.toThrow('Unexpected error: findOne error');
+      await expect(service.getQuestion(readArgs)).rejects.toThrow('Unexpected error: findOne error');
     });
 
     it('Fail: GetQuestions', async () => {
       repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getQuestions()).rejects.toThrow('Unexpected error: find error');
+      await expect(service.getQuestions()).rejects.toThrow('Unexpected error: find error');
     });
 
     it ('Pass: GetQuestion', async () => {
@@ -123,7 +123,7 @@ describe('QuestionService', () => {
 
     it('Fail: UpdateQuestion', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.updateQuestion(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.updateQuestion(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateQuestion', async () => {
@@ -147,7 +147,7 @@ describe('QuestionService', () => {
 
     it('Fail: DeleteQuestion', async () => {
       repository.delete.mockRejectedValue(new Error('delete error'));
-      expect(service.deleteQuestion(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
+      await expect(service.deleteQuestion(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
     });
 
     it('Pass: DeleteQuestion', async () => {

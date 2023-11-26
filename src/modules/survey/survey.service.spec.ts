@@ -52,7 +52,7 @@ describe('SurveyService', () => {
 
     it('Fail: CreateSurvey', async () => {
       repository.save.mockRejectedValue(new Error('save error'));
-      expect(service.createSurvey(createArgs)).rejects.toThrow('Unexpected error: save error');
+      await expect(service.createSurvey(createArgs)).rejects.toThrow('Unexpected error: save error');
     });
 
     it('Pass: CreateSurvey', async () => {
@@ -77,12 +77,12 @@ describe('SurveyService', () => {
 
     it('Fail: GetSurvey', async () => {
       repository.findOne.mockRejectedValue(new Error('findOne error'));
-      expect(service.getSurvey(readArgs)).rejects.toThrow('Unexpected error: findOne error');
+      await expect(service.getSurvey(readArgs)).rejects.toThrow('Unexpected error: findOne error');
     });
 
     it('Fail: GetSurveys', async () => {
       repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getSurveys()).rejects.toThrow('Unexpected error: find error');
+      await expect(service.getSurveys()).rejects.toThrow('Unexpected error: find error');
     });
 
     it ('Pass: GetSurvey', async () => {
@@ -123,7 +123,7 @@ describe('SurveyService', () => {
 
     it('Fail: UpdateSurvey', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.updateSurvey(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.updateSurvey(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateSurvey', async () => {
@@ -147,7 +147,7 @@ describe('SurveyService', () => {
 
     it('Fail: DeleteSurvey', async () => {
       repository.delete.mockRejectedValue(new Error('delete error'));
-      expect(service.deleteSurvey(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
+      await expect(service.deleteSurvey(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
     });
 
     it('Pass: DeleteSurvey', async () => {

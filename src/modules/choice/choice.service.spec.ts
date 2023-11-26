@@ -53,7 +53,7 @@ describe('ChoiceService', () => {
 
     it('Fail: CreateChoice', async () => {
       repository.save.mockRejectedValue(new Error('save error'));
-      expect(service.createChoice(createArgs)).rejects.toThrow('Unexpected error: save error');
+      await expect(service.createChoice(createArgs)).rejects.toThrow('Unexpected error: save error');
     });
 
     it('Pass: CreateChoice', async () => {
@@ -79,12 +79,12 @@ describe('ChoiceService', () => {
 
     it('Fail: GetChoice', async () => {
       repository.findOne.mockRejectedValue(new Error('findOne error'));
-      expect(service.getChoice(readArgs)).rejects.toThrow('Unexpected error: findOne error');
+      await expect(service.getChoice(readArgs)).rejects.toThrow('Unexpected error: findOne error');
     });
 
     it('Fail: GetChoices', async () => {
       repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getChoices()).rejects.toThrow('Unexpected error: find error');
+      await expect(service.getChoices()).rejects.toThrow('Unexpected error: find error');
     });
 
     it ('Pass: GetChoice', async () => {
@@ -127,7 +127,7 @@ describe('ChoiceService', () => {
 
     it('Fail: UpdateChoice', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.updateChoice(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.updateChoice(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateChoice', async () => {
@@ -151,7 +151,7 @@ describe('ChoiceService', () => {
 
     it('Fail: DeleteChoice', async () => {
       repository.delete.mockRejectedValue(new Error('delete error'));
-      expect(service.deleteChoice(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
+      await expect(service.deleteChoice(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
     });
 
     it('Pass: DeleteChoice', async () => {

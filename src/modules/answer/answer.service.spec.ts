@@ -52,7 +52,7 @@ describe('AnswerService', () => {
 
     it('Fail: CreateAnswer', async () => {
       repository.save.mockRejectedValue(new Error('save error'));
-      expect(service.createAnswer(createArgs)).rejects.toThrow('Unexpected error: save error');
+      await expect(service.createAnswer(createArgs)).rejects.toThrow('Unexpected error: save error');
     });
 
     it('Pass: CreateAnswer', async () => {
@@ -77,12 +77,12 @@ describe('AnswerService', () => {
 
     it('Fail: GetAnswer', async () => {
       repository.findOne.mockRejectedValue(new Error('findOne error'));
-      expect(service.getAnswer(readArgs)).rejects.toThrow('Unexpected error: findOne error');
+      await expect(service.getAnswer(readArgs)).rejects.toThrow('Unexpected error: findOne error');
     });
 
     it('Fail: GetAnswers', async () => {
       repository.find.mockRejectedValue(new Error('find error'));
-      expect(service.getAnswers()).rejects.toThrow('Unexpected error: find error');
+      await expect(service.getAnswers()).rejects.toThrow('Unexpected error: find error');
     });
 
     it ('Pass: GetAnswer', async () => {
@@ -123,7 +123,7 @@ describe('AnswerService', () => {
 
     it('Fail: UpdateAnswer', async () => {
       repository.update.mockRejectedValueOnce(new Error('update error'));
-      expect(service.updateAnswer(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
+      await expect(service.updateAnswer(updateArgsId, updateArgs)).rejects.toThrow('Unexpected error: update error');
     });
 
     it('Pass: UpdateAnswer', async () => {
@@ -147,7 +147,7 @@ describe('AnswerService', () => {
 
     it('Fail: DeleteAnswer', async () => {
       repository.delete.mockRejectedValue(new Error('delete error'));
-      expect(service.deleteAnswer(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
+      await expect(service.deleteAnswer(deleteArgs)).rejects.toThrow('Unexpected error: delete error');
     });
 
     it('Pass: DeleteAnswer', async () => {
