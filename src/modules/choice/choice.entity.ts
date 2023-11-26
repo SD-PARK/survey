@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Question } from "../question/question.entity";
+import { Answer } from "../answer/answer.entity";
 
 @ObjectType()
 @Entity('choices')
@@ -25,4 +26,7 @@ export class Choice {
     @ManyToOne(() => Question, question => question.choices)
     @JoinColumn({ name: 'id' })
     question: Question;
+
+    @OneToMany(() => Answer, answer => answer.choice)
+    answers: Answer[];
 }
