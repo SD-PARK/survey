@@ -3,10 +3,12 @@ import { SurveyResponseService } from './survey_response.service';
 import { SurveyResponse } from './survey_response.entity';
 import { IsNull, Not, Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Answer } from '../answer/answer.entity';
 
 describe('SurveyResponseService', () => {
   let service: SurveyResponseService;
   let repository: MockRepository<SurveyResponse>;
+  let answerRepository: MockRepository<Answer>;
 
   const mockRepository = () => ({
     create: jest.fn(),
@@ -33,6 +35,10 @@ describe('SurveyResponseService', () => {
           provide:  getRepositoryToken(SurveyResponse),
           useValue: mockRepository(),
         },
+        {
+          provide:  getRepositoryToken(Answer),
+          useValue: mockRepository(),
+        },
         SurveyResponseService,
       ],
     }).compile();
@@ -40,6 +46,9 @@ describe('SurveyResponseService', () => {
     service = module.get<SurveyResponseService>(SurveyResponseService);
     repository = module.get<MockRepository<SurveyResponse>>(
       getRepositoryToken(SurveyResponse),
+    );
+    answerRepository = module.get<MockRepository<Answer>>(
+      getRepositoryToken(Answer),
     );
   });
 
@@ -208,6 +217,8 @@ describe('SurveyResponseService', () => {
       repository.delete.mockResolvedValue(deleteResult);
       const result = await service.deleteSurveyResponse(deleteArgs);
 
+      expect(answerRepository.delete).toHaveBeenCalledTimes(1);
+      expect(answerRepository.delete).toHaveBeenCalledWith({ surveyResponseId: deleteArgs });
       expect(repository.createQueryBuilder).toHaveBeenCalledTimes(1);
       expect(repository.delete).toHaveBeenCalledTimes(1);
       expect(repository.delete).toHaveBeenCalledWith(deleteArgs);
