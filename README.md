@@ -68,6 +68,7 @@ $ npm run test:cov
 ### 설문지 CRUD
 **CREATE**
 
+`새 설문지를 생성합니다.`
 ```graphql
 mutation {
   createSurvey(surveyInput: {
@@ -83,6 +84,7 @@ mutation {
 
 **READ**
 
+`ID에 해당하는 설문지를 조회합니다.`
 ```graphql
 query {
   getSurvey(id: 1) {
@@ -93,6 +95,7 @@ query {
 }
 ```
 
+`모든 설문지를 조회합니다.`
 ```graphql
 query {
   getSurveys {
@@ -105,6 +108,7 @@ query {
 
 **UPDATE**
 
+`설문지 데이터를 변경합니다.`
 ```graphql
 mutation {
   updateSurvey(id: 1, surveyInput: {
@@ -120,6 +124,7 @@ mutation {
 
 **DELETE**
 
+`설문지를 삭제합니다.`
 ```graphql
 mutation {
   deleteSurvey(id: 1)
@@ -129,6 +134,7 @@ mutation {
 ### 문항 CRUD
 **CREATE**
 
+`새 문항을 생성합니다.`
 ```graphql
 mutation {
   createQuestion(questionInput: {
@@ -144,6 +150,7 @@ mutation {
 
 **READ**
 
+`ID에 해당하는 문항을 조회합니다.`
 ```graphql
 query {
   getQuestion(id: 1) {
@@ -154,6 +161,7 @@ query {
 }
 ```
 
+`모든 문항을 조회합니다.`
 ```graphql
 query {
   getQuestions {
@@ -166,6 +174,7 @@ query {
 
 **UPDATE**
 
+`문항 데이터를 변경합니다.`
 ```graphql
 mutation {
   updateQuestion(id: 1, questionInput: {
@@ -181,6 +190,7 @@ mutation {
 
 **DELETE**
 
+`문항을 삭제합니다.`
 ```graphql
 mutation {
   deleteQuestion(id: 1)
@@ -190,6 +200,7 @@ mutation {
 ### 선택지 CRUD
 **CREATE**
 
+`새 선택지를 생성합니다.`
 ```graphql
 mutation {
   createChoice(choiceInput: {
@@ -207,6 +218,7 @@ mutation {
 
 **READ**
 
+`ID에 해당하는 선택지를 조회합니다.`
 ```graphql
 query {
   getChoice(id: 1) {
@@ -218,6 +230,7 @@ query {
 }
 ```
 
+`모든 선택지를 조회합니다.`
 ```graphql
 query {
   getChoices {
@@ -231,6 +244,7 @@ query {
 
 **UPDATE**
 
+`선택지 데이터를 변경합니다.`
 ```graphql
 mutation {
   updateChoice(id: 1, choiceInput: {
@@ -248,6 +262,7 @@ mutation {
 
 **DELETE**
 
+`선택지를 삭제합니다.`
 ```graphql
 mutation {
   deleteChoice(id: 1)
@@ -257,6 +272,7 @@ mutation {
 ### 답변 CRUD
 **CREATE**
 
+`새 답변을 생성합니다.`
 ```graphql
 mutation {
   createAnswer(answerInput: {
@@ -272,6 +288,7 @@ mutation {
 
 **READ**
 
+`ID에 해당하는 답변을 조회합니다.`
 ```graphql
 query {
   getAnswer(id: 1) {
@@ -282,6 +299,7 @@ query {
 }
 ```
 
+`모든 답변을 조회합니다.`
 ```graphql
 query {
   getAnswers {
@@ -294,6 +312,7 @@ query {
 
 **UPDATE**
 
+`답변 데이터를 변경합니다.`
 ```graphql
 mutation {
   updateAnswer(id: 1, answerInput: {
@@ -309,6 +328,7 @@ mutation {
 
 **DELETE**
 
+`답변을 삭제합니다.`
 ```graphql
 mutation {
   deleteAnswer(id: 1)
@@ -318,6 +338,7 @@ mutation {
 ### 작성지 CRUD
 **CREATE**
 
+`새 작성지를 생성합니다.`
 ```graphql
 mutation {
   createSurveyResponse(surveyResponseInput: {
@@ -335,6 +356,7 @@ mutation {
 
 **READ**
 
+`ID에 해당하는 작성지를 조회합니다.`
 ```graphql
 query {
   getSurveyResponse(id: 1) {
@@ -347,6 +369,7 @@ query {
 }
 ```
 
+`모든 작성지를 조회합니다.`
 ```graphql
 query {
   getSurveyResponses {
@@ -359,6 +382,7 @@ query {
 }
 ```
 
+`완료된 작성지를 조회합니다.`
 ```graphql
 query {
   getCompletedSurveys {
@@ -373,6 +397,7 @@ query {
 
 **UPDATE**
 
+`작성지 데이터를 변경합니다.`
 ```graphql
 mutation {
   updateSurveyResponse(id: 1, surveyResponseInput: {
@@ -388,6 +413,7 @@ mutation {
 }
 ```
 
+`작성지를 완료합니다. 테이블의 completionDate 값에 현재 시각이 입력됩니다.`
 ```graphql
 mutation {
   completeSurvey(id: 1) {
@@ -402,6 +428,7 @@ mutation {
 
 **DELETE**
 
+`작성지를 삭제합니다.`
 ```graphql
 mutation {
   deleteSurveyResponse(id: 1)
