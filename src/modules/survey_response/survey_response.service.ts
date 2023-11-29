@@ -1,13 +1,15 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SurveyResponse } from './survey_response.entity';
-import { DeleteResult, IsNull, Not, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateSurveyResponseInput, UpdateSurveyResponseInput } from './survey_response.input';
+import { Answer } from '../answer/answer.entity';
 
 @Injectable()
 export class SurveyResponseService {
     constructor(
         @InjectRepository(SurveyResponse) private readonly surveyResponseRepository: Repository<SurveyResponse>,
+        @InjectRepository(Answer) private readonly answerRepository: Repository<Answer>,
     ) {}
     private readonly logger: Logger = new Logger(SurveyResponseService.name);
 
@@ -116,6 +118,7 @@ export class SurveyResponseService {
     async deleteSurveyResponse(id: number): Promise<number> {
         await this.getSurveyResponse(id);
         try {
+            await this.answerRepository.delete({ surveyResponseId: id });
             const result: DeleteResult = await this.surveyResponseRepository.delete(id);
             return result.affected;
         } catch (err) {
