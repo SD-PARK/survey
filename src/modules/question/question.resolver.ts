@@ -8,8 +8,8 @@ export class QuestionResolver {
     constructor(private readonly questionService: QuestionService) {}
     // Create
     @Mutation(() => Question)
-    async createQuestion(@Args('QuestionInput') QuestionInput: CreateQuestionInput): Promise<Question> {
-        return this.questionService.createQuestion(QuestionInput);
+    async createQuestion(@Args('QuestionInput') questionInput: CreateQuestionInput): Promise<Question> {
+        return this.questionService.createQuestion(questionInput);
     }
     
     // Read
@@ -27,9 +27,9 @@ export class QuestionResolver {
     @Mutation(() => Question)
     async updateQuestion(
         @Args('id') id: number,
-        @Args('QuestionInput') QuestionInput: UpdateQuestionInput
+        @Args('QuestionInput') questionInput: UpdateQuestionInput
     ): Promise<Question> {
-        return this.questionService.updateQuestion(id, QuestionInput);
+        return this.questionService.updateQuestion(id, questionInput);
     }
 
     // Delete

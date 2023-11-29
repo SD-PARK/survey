@@ -8,8 +8,8 @@ export class ChoiceResolver {
     constructor(private readonly choiceService: ChoiceService) {}
     // Create
     @Mutation(() => Choice)
-    async createChoice(@Args('ChoiceInput') ChoiceInput: CreateChoiceInput): Promise<Choice> {
-        return this.choiceService.createChoice(ChoiceInput);
+    async createChoice(@Args('ChoiceInput') choiceInput: CreateChoiceInput): Promise<Choice> {
+        return this.choiceService.createChoice(choiceInput);
     }
     
     // Read
@@ -27,9 +27,9 @@ export class ChoiceResolver {
     @Mutation(() => Choice)
     async updateChoice(
         @Args('id') id: number,
-        @Args('ChoiceInput') ChoiceInput: UpdateChoiceInput
+        @Args('ChoiceInput') choiceInput: UpdateChoiceInput
     ): Promise<Choice> {
-        return this.choiceService.updateChoice(id, ChoiceInput);
+        return this.choiceService.updateChoice(id, choiceInput);
     }
 
     // Delete
