@@ -64,6 +64,7 @@ $ npm run test:cov
 
 ***"작성지 CRUD를 통해 설문지 완료, 완료된 설문지 확인, 설문지 총점 확인 등의 기능을 확인할 수 있습니다."***
 
+---
 ### 설문지 CRUD
 **CREATE**
 
@@ -124,7 +125,7 @@ mutation {
   deleteSurvey(id: 1)
 }
 ```
-
+---
 ### 문항 CRUD
 **CREATE**
 
@@ -185,7 +186,7 @@ mutation {
   deleteQuestion(id: 1)
 }
 ```
-
+---
 ### 선택지 CRUD
 **CREATE**
 
@@ -252,7 +253,7 @@ mutation {
   deleteChoice(id: 1)
 }
 ```
-
+---
 ### 답변 CRUD
 **CREATE**
 
@@ -313,7 +314,7 @@ mutation {
   deleteAnswer(id: 1)
 }
 ```
-
+---
 ### 작성지 CRUD
 **CREATE**
 
