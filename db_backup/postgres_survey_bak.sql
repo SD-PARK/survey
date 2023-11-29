@@ -237,9 +237,6 @@ ALTER TABLE ONLY public.surveys ALTER COLUMN id SET DEFAULT nextval('public.surv
 --
 
 COPY public.answers (id, survey_response_id, choice_id) FROM stdin;
-1	1	2
-2	1	3
-3	1	6
 \.
 
 
@@ -248,12 +245,6 @@ COPY public.answers (id, survey_response_id, choice_id) FROM stdin;
 --
 
 COPY public.choices (id, question_id, content, score) FROM stdin;
-1	1	왼쪽	1
-2	1	오른쪽	2
-4	2	꼬리	2
-3	2	머리	1
-5	3	백	2
-6	3	흑	1
 \.
 
 
@@ -262,9 +253,6 @@ COPY public.choices (id, question_id, content, score) FROM stdin;
 --
 
 COPY public.questions (id, survey_id, content) FROM stdin;
-1	1	왼쪽인가? 오른쪽인가?
-2	1	머리인가? 꼬리인가?
-3	1	흑인가? 백인가?
 \.
 
 
@@ -273,9 +261,6 @@ COPY public.questions (id, survey_id, content) FROM stdin;
 --
 
 COPY public.survey_responses (id, survey_id, user_id, completion_date) FROM stdin;
-3	1	3	\N
-4	1	3	\N
-1	1	1	2023-11-26 20:26:46.404
 \.
 
 
@@ -284,7 +269,6 @@ COPY public.survey_responses (id, survey_id, user_id, completion_date) FROM stdi
 --
 
 COPY public.surveys (id, title, description) FROM stdin;
-1	호그와트 기숙사 배정 테스트	\N
 \.
 
 
@@ -292,35 +276,35 @@ COPY public.surveys (id, title, description) FROM stdin;
 -- Name: answers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.answers_id_seq', 4, true);
+SELECT pg_catalog.setval('public.answers_id_seq', 1, false);
 
 
 --
 -- Name: choices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.choices_id_seq', 6, true);
+SELECT pg_catalog.setval('public.choices_id_seq', 1, false);
 
 
 --
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.questions_id_seq', 3, true);
+SELECT pg_catalog.setval('public.questions_id_seq', 1, false);
 
 
 --
 -- Name: survey_responses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.survey_responses_id_seq', 4, true);
+SELECT pg_catalog.setval('public.survey_responses_id_seq', 1, false);
 
 
 --
 -- Name: surveys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.surveys_id_seq', 1, true);
+SELECT pg_catalog.setval('public.surveys_id_seq', 1, false);
 
 
 --
