@@ -1,6 +1,6 @@
 ## Description
 
-설문
+객관식 설문지를 생성 및 관리하는 서버입니다.
 
 <p align="center">
   <img src ="https://img.shields.io/badge/TYPESCRIPT-3178C6.svg?&style=for-the-badge&logo=TypeScript&logoColor=white"/>
