@@ -419,7 +419,7 @@ mutation {
 }
 ```
 
-`작성지를 완료합니다. 테이블의 completionDate 값에 현재 시각이 입력됩니다.`
+`작성지를 완료합니다.` `completionDate 컬럼에 현재 시각이 입력됩니다.`
 ```graphql
 mutation {
   completeSurvey(id: 1) {
